@@ -19,7 +19,7 @@ password length = 27
 [+] numbers <br />
 [+] capital letters <br />
 [+] lowercase letters <br />
-[+] special characters <br />
+[+] 2 special characters <br />
 [-] common pattern "qwerty" is found <br />
 [-] common pattern "abcdef" is found <br />
 
