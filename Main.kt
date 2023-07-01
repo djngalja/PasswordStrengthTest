@@ -44,7 +44,8 @@ fun evaluate(pass: String){
 
 //An additional point for every special character.
     val characters = checkSpecialChar(pass)
-    printResult(characters, "special characters")
+    if(characters==0) println("[-] special characters")
+    else println("[+] $characters special characters")
     score+= characters
 
 //Too lazy to come up with an original password? Too bad! -1 point for every common pattern found in your password.
