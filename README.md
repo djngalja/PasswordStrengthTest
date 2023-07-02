@@ -1,4 +1,4 @@
-# Password Strength Test
+## Password Strength Test
 Run this Kotlin code to evaluate the strength of your password based on the following criteria:
 
 - length
@@ -6,22 +6,43 @@ Run this Kotlin code to evaluate the strength of your password based on the foll
 - whether it contains uppercase and lowercase letters, and numbers
 - whether it is (or it contains) a common pattern, such as "qwerty", "123123", "abcdef", etc.
 
-## Input Format
+### Input Format
 
-A string containing a password. For example:
-- Agd123!goodPass
-- 37485Iforgotit
+A string containing a password. 
 
-## Sample Output
+Example: <br />
+`:g8jzabcdef9p}qwerty7d7v `
 
-password length = 27
+### Sample Output
 
-[+] numbers <br />
-[+] capital letters <br />
-[+] lowercase letters <br />
-[+] 2 special characters <br />
-[-] common pattern "qwerty" is found <br />
-[-] common pattern "abcdef" is found <br />
+password length = 24
 
-total score = 6 (medium)
+[x] numbers <br />
+[ ] capital letters <br />
+[x] lowercase letters <br />
+[x] 2 special characters <br />
+[!] common pattern "qwerty" is found <br />
+[!] common pattern "abcdef" is found <br />
+
+total score = 5 (medium)
+
+### Scoring System
+
+| Score  | Password Strength |
+| --- | --- |
+| < 3  | very weak  |
+| 3 - 4  | weak  |
+| 5 - 6 | medium |
+| 7 - 8 | strong |
+| > 8 | very strong |
+
+Points are awarded if:
+
+- the length is at least 8 characters (and +1 point for every 8 additional characters) 
+- there are numbers
+- there are capital letters 
+- there are lowercase letters
+- there are special characters (and +1 point for every additional special character) 
+
+A point is subtracted for every common pattern found in the password.
 
