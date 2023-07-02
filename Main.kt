@@ -44,8 +44,8 @@ fun evaluate(pass: String){
 
 //An additional point for every special character.
     val characters = checkSpecialChar(pass)
-    if(characters==0) println("[-] special characters")
-    else println("[+] $characters special characters")
+    if(characters==0) println("[ ] special characters")
+    else println("[x] $characters special character(s)")
     score+= characters
 
 //Too lazy to come up with an original password? Too bad! -1 point for every common pattern found in your password.
@@ -59,8 +59,8 @@ fun evaluate(pass: String){
 }
 
 fun printResult(num: Int, name: String){
-    if(num==0) println("[-] $name")// Functions return 0, if nothing was found (no numbers / no special characters)
-    else println("[+] $name")
+    if(num==0) println("[ ] $name")// Functions return 0, if nothing was found (no numbers / no special characters)
+    else println("[x] $name")
 }
 
 fun strength(score:Int):String{
@@ -103,7 +103,7 @@ fun findCommonPass(pass: String, common: String): Int{
                 else break
             }
             if(size==common.length-1){
-                println("[-] common pattern \"$common\" is found")
+                println("[!] common pattern \"$common\" is found")
                 count++
             }
         }
