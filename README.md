@@ -20,7 +20,7 @@ password length = 24
 [x] numbers <br />
 [ ] capital letters <br />
 [x] lowercase letters <br />
-[x] 2 special characters <br />
+[x] 2 special character(s) <br />
 [!] common pattern "qwerty" is found <br />
 [!] common pattern "abcdef" is found <br />
 
