@@ -49,7 +49,7 @@ fun evaluate(pass: String){
     score+= characters
 
 //Too lazy to come up with an original password? Too bad! -1 point for every common pattern found in your password.
-    val common = arrayOf("qwerty", "12345", "123123", "1111", "password", "abcdef") //add popular password patterns to this array
+    val common = arrayOf("0000", "1111", "123123", "123321", "12345", "5555", "654321", "8888", "123qwe", "1q2w3e", "abc123", "abcdef", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome") //add popular password patterns to this array
     for(i in 0 until common.size){
         score+=findCommonPass(pass, common[i])
     }
