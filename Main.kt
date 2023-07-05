@@ -50,8 +50,8 @@ fun evaluate(pass: String){
 
 //Too lazy to come up with an original password? Too bad! -1 point for every common pattern found in your password.
     val common = arrayOf("0000", "1111", "123123", "123321", "12345", "5555", "654321", "8888", "123qwe", "1q2w3e", "abc123", "abcdef", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome") //add popular password patterns to this array
-    for(i in 0 until common.size){
-        score+=findCommonPass(pass, common[i])
+    for(i in common){
+        score+=findCommonPass(pass, i)
     }
 
     val result = strength(score)
@@ -74,8 +74,8 @@ fun strength(score:Int):String{
 //This function checks whether a group of certain characters can be found in your password using their ASCII codes
 fun checkChar(pass: String, num1: Int, num2: Int): Int{
 
-    for(i in 0 until pass.length){
-        if(pass[i].code in num1..num2) return 1
+    for(i in pass){
+        if(i.code in num1..num2) return 1
     }
     return 0
 }
@@ -84,9 +84,9 @@ fun checkChar(pass: String, num1: Int, num2: Int): Int{
 fun checkSpecialChar(pass: String):Int{
     var count = 0
     val special ="~@#$%^&*_-+=`|\\/(){}[]<>:;\"',.?!"
-    for(i in 0 until pass.length){
-        for(j in 0 until special.length){
-            if(pass[i]==special[j]) count++
+    for(i in pass){
+        for(j in special){
+            if(i==j) count++
         }
     }
     return count
