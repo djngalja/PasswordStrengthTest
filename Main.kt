@@ -64,11 +64,11 @@ fun printResult(num: Int, name: String){
 }
 
 fun strength(score:Int):String{
-    if(score<=2) return "very weak"
-    else if(score<=4) return "weak"
-    else if(score<=6) return "medium"
-    else if(score<=8) return "strong"
-    else return "very strong"
+    return if(score<=2) "very weak"
+    else if(score<=4) "weak"
+    else if(score<=6) "medium"
+    else if(score<=8) "strong"
+    else "very strong"
 }
 
 //This function checks whether a group of certain characters can be found in your password using their ASCII codes
