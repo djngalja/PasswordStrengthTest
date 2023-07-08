@@ -3,7 +3,7 @@
     SCORE:
 Length: +1 point for every 8 characters
 +1 point for numbers
-+1 point for capital letters
++1 point for uppercase letters
 +1 point for lowercase letters
 +1 point for every special character
 -1 point for every common pattern */
@@ -13,14 +13,12 @@ fun main() {
     println("password length = ${pass.length}\n")
 
     var score = 0
-    val patterns = arrayOf("0000", "1111", "123123", "123321", "12345", "5555", "654321", "8888", "123qwe", "1q2w3e", "abc123", "abcdef", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome")
     val numbers = checkChar(pass,48,57, "numbers") //ASCII codes
-    val capitals = checkChar(pass,65,90, "capital letters")
+    val uppercase = checkChar(pass,65,90, "uppercase letters")
     val lowercase = checkChar(pass,97,122, "lowercase letters")
     val characters = checkSpecialChar(pass)
-
-    score+= pass.length/8 + numbers + capitals + lowercase + characters
-    for(pattern in patterns) score-= findCommonPat(pass, pattern)
+    val patterns =  findCommonPat(pass)
+    score+= pass.length/8 + numbers + uppercase + lowercase + characters - patterns
 
     println("\ntotal score = $score (${evalStrength(score)})")
 }
@@ -60,21 +58,28 @@ fun checkSpecialChar(pass: String):Int{
 }
 
 //This function looks for common password patterns such as "qwerty", "12345", etc.
-fun findCommonPat(pass: String, pattern: String): Int{
-    var temp = ""
-    var found = 0
-    for(i in 0 until pass.length){
-        if(pass[i]==pattern[0] && (i+pattern.length-1)<=pass.length){ //find the 1st letter of a pattern
-            temp+= pattern[0]
-            for(j in 1 until pattern.length){
-                if(pass[i+j]==pattern[j]) temp+= pattern[j]
-                else break
+fun findCommonPat(pass: String): Int{
+    //add common password patterns to this array:
+    val patterns = arrayOf("0000", "1111", "123123", "123321", "12345", "5555", "654321", "8888", "123qwe", "1q2w3e", "abc123", "abcdef", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome")
+    var count = 0
+    for(pattern in patterns){
+        var i = 0
+        while(i<pass.length){
+            var temp = ""
+            if(pass[i]==pattern[0] && pass.length>=(i+pattern.length)){ //find the 1st letter of a pattern
+                temp+= pass[i]
+                for(j in 1 until pattern.length){
+                    if(pass[i+j]==pattern[j]) temp+= pass[i+j]
+                    else break
+                }
+                if(temp==pattern){
+                    println("[!] common pattern \"$pattern\" is found")
+                    count++
+                    i+= pattern.length
+                }
             }
-            if(temp==pattern){ //a common pattern is found
-                println("[!] common pattern \"$pattern\" is found")
-                found = 1
-            }
+            i++
         }
     }
-    return found
+    return count
 }
