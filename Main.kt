@@ -17,7 +17,8 @@ fun main() {
     val uppercase = checkChar(pass,65,90, "uppercase letters")
     val lowercase = checkChar(pass,97,122, "lowercase letters")
     val characters = checkSpecialChar(pass)
-    val patterns =  findCommonPat(pass)
+    val patterns =  findCommonPat(pass) + findRepChars(pass)
+
     score+= pass.length/8 + numbers + uppercase + lowercase + characters - patterns
 
     println("\ntotal score = $score (${evalStrength(score)})")
@@ -60,7 +61,7 @@ fun checkSpecialChar(pass: String):Int{
 //This function looks for common password patterns such as "qwerty", "12345", etc.
 fun findCommonPat(pass: String): Int{
     //add common password patterns to this array:
-    val patterns = arrayOf("0000", "1111", "123123", "123321", "12345", "5555", "654321", "8888", "123qwe", "1q2w3e", "abc123", "abcdef", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome")
+    val patterns = arrayOf("123123", "123321", "12345", "654321", "123qwe", "1q2w3e", "abc123", "abcdef", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome")
     var count = 0
     for(pattern in patterns){
         var i = 0
@@ -80,6 +81,31 @@ fun findCommonPat(pass: String): Int{
             }
             i++
         }
+    }
+    return count
+}
+
+//find patterns of repeating (>3) characters
+fun findRepChars(pass: String):Int{
+    val len = pass.length
+    var i = 0
+    var count = 0
+    while(i<len-3){ //ignore the last 3 characters
+        var temp = ""
+        if(pass[i]==pass[i+1]){ //2 repeating characters found
+            temp+= pass[i]
+            var j = 1
+            while(j<(len-i) && pass[i]==pass[i+j]){
+                temp+= pass[i]
+                j++
+            }
+        }
+        if(temp.length>3){
+            count++
+            println("[!] common pattern \"$temp\" is found")
+            i+= temp.length-1
+        }
+        i++
     }
     return count
 }
