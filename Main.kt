@@ -17,7 +17,7 @@ fun main() {
     val uppercase = checkChar(pass,65,90, "uppercase letters")
     val lowercase = checkChar(pass,97,122, "lowercase letters")
     val characters = checkSpecialChar(pass)
-    val patterns =  findCommonPat(pass) + findRepChars(pass)
+    val patterns =  findCommonPat(pass) + findRepChars(pass) + findABCpatterns(pass)
 
     score+= pass.length/8 + numbers + uppercase + lowercase + characters - patterns
 
@@ -33,7 +33,7 @@ fun evalStrength(score:Int):String{
     else "very strong"
 }
 
-//This function checks if a password contains numbers/lowercase/capital letters (using their ASCII codes)
+//check if the password contains numbers/lowercase/capital letters (using their ASCII codes)
 fun checkChar(pass: String, num1: Int, num2: Int, name: String): Int{
     var found = 0
     for(i in pass){
@@ -44,7 +44,7 @@ fun checkChar(pass: String, num1: Int, num2: Int, name: String): Int{
     return found
 }
 
-//This function looks for special characters and counts them
+//find special characters and count them
 fun checkSpecialChar(pass: String):Int{
     var count = 0
     val specialChar ="~@#$%^&*_-+=`|\\/(){}[]<>:;\"',.?!"
@@ -58,10 +58,10 @@ fun checkSpecialChar(pass: String):Int{
     return count
 }
 
-//This function looks for common password patterns such as "qwerty", "12345", etc.
+//find common patterns such as "qwerty", "admin", etc.
 fun findCommonPat(pass: String): Int{
     //add common password patterns to this array:
-    val patterns = arrayOf("123123", "123321", "12345", "654321", "123qwe", "1q2w3e", "abc123", "abcdef", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome")
+    val patterns = arrayOf("123123", "123321", "654321", "123qwe", "1q2w3e", "abc123", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome")
     var count = 0
     for(pattern in patterns){
         var i = 0
@@ -85,7 +85,7 @@ fun findCommonPat(pass: String): Int{
     return count
 }
 
-//find patterns of repeating (>3) characters
+//find patterns of repeating (>3) characters and count them
 fun findRepChars(pass: String):Int{
     val len = pass.length
     var i = 0
@@ -97,6 +97,31 @@ fun findRepChars(pass: String):Int{
             var j = 1
             while(j<(len-i) && pass[i]==pass[i+j]){
                 temp+= pass[i]
+                j++
+            }
+        }
+        if(temp.length>3){
+            count++
+            println("[!] common pattern \"$temp\" is found")
+            i+= temp.length-1
+        }
+        i++
+    }
+    return count
+}
+
+//find arithmetic sequences with a common difference of 1 and sequences of letters in alphabetical order
+fun findABCpatterns(pass: String):Int{
+    var i = 0
+    var count = 0
+    while(i<pass.length-3){ //ignore the last 3 characters
+        var temp = ""
+        if(pass[i].code==pass[i+1].code-1){
+            temp+= pass[i]
+            temp+= pass[i+1]
+            var j = 1
+            while(j<(pass.length-i-1) && pass[i+j].code==pass[i+j+1].code-1){
+                temp+= pass[i+j+1]
                 j++
             }
         }
