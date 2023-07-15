@@ -37,7 +37,10 @@ fun evalStrength(score:Int):String{
 fun checkChar(pass: String, num1: Int, num2: Int, name: String): Int{
     var found = 0
     for(i in pass){
-        if(i.code in num1..num2) found = 1
+        if(i.code in num1..num2){
+            found = 1
+            break
+        }
     }
     if(found==0) println("[ ] $name")
     else println("[x] $name")
