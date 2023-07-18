@@ -33,30 +33,30 @@ fun evalStrength(score:Int):String{
     else "very strong"
 }
 
-//check if the password contains numbers/lowercase/capital letters (using their ASCII codes)
-fun checkChar(pass: String, num1: Int, num2: Int, name: String): Int{
+/*
+* Returns 1 if at least 1 [number/lowercase letter/uppercase letter] was found.
+* Returns 0 if no such character was found.
+*/
+fun checkChar(password: String, asciiNum1: Int, asciiNum2: Int, name: String): Int {
     var found = 0
-    for(i in pass){
-        if(i.code in num1..num2){
+    for (i in password) {
+        if (i.code in asciiNum1..asciiNum2) {
             found = 1
             break
         }
     }
-    if(found==0) println("[ ] $name")
+    if (found == 0) println("[ ] $name")
     else println("[x] $name")
     return found
 }
 
-//find special characters and count them
-fun checkSpecialChar(pass: String):Int{
+/*
+* Returns the number of special characters, or 0 if no special characters were found.
+*/
+fun checkSpecialChar(password: String): Int {
     var count = 0
-    val specialChar ="~@#$%^&*_-+=`|\\/(){}[]<>:;\"',.?!"
-    for(i in pass){
-        for(j in specialChar){
-            if(i==j) count++
-        }
-    }
-    if(count==0) println("[ ] special characters")
+    for (c in password) if (!(c.isLetterOrDigit())) count++
+    if (count == 0) println("[ ] special characters")
     else println("[x] $count special character(s)")
     return count
 }
