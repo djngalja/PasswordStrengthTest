@@ -9,55 +9,98 @@ Length: +1 point for every 8 characters
 -1 point for every common pattern */
 
 fun main() {
-    val pass = readln()
-    println("password length = ${pass.length}\n")
+    val password = readln()
 
-    var score = 0
-    val numbers = checkChar(pass,48,57, "numbers") //ASCII codes
-    val uppercase = checkChar(pass,65,90, "uppercase letters")
-    val lowercase = checkChar(pass,97,122, "lowercase letters")
-    val characters = checkSpecialChar(pass)
-    val patterns =  findCommonPat(pass) + findRepChars(pass) + findABCpatterns(pass)
+    val numbers = findNumbers(password)
+    val uppercase = findUpperCase(password)
+    val lowercase = findLowerCase(password)
+    val specialChars = findSpecialChars(password)
+    val patterns =  findCommonPat(password) + findRepChars(password) + findABCpatterns(password)
 
-    score+= pass.length/8 + numbers + uppercase + lowercase + characters - patterns
+    val score = password.length/8 + numbers + uppercase + lowercase + specialChars - patterns
+    printResults(password, score)
 
-    println("\ntotal score = $score (${evalStrength(score)})")
 }
 
+fun printResults(password: String, score: Int) {
+    println()
+    println("password length = " + password.length)
+    println()
+    printCheckList("numbers", findNumbers(password))
+    printCheckList("capital letters", findUpperCase(password))
+    printCheckList("lowercase letters", findLowerCase(password))
+    printCheckList("special characters", findSpecialChars(password), true)
+    println()
+    println("total score = $score (${evalScore(score)})")
+}
 
-fun evalStrength(score:Int):String{
-    return if(score<=2) "very weak"
-    else if(score<=4) "weak"
-    else if(score<=6) "medium"
-    else if(score<=8) "strong"
+fun printCheckList(name: String, value: Int, specialChar: Boolean = false) {
+    if (value == 0) println("[ ] $name")
+    else {
+        if (specialChar) println("[x] $value special character(s)")
+        else println("[x] $name")
+    }
+}
+
+fun evalScore(score: Int): String {
+    return if (score <= 2) "very weak"
+    else if (score <= 4) "weak"
+    else if (score <= 6) "medium"
+    else if (score <= 8) "strong"
     else "very strong"
 }
 
 /*
-* Returns 1 if at least 1 [number/lowercase letter/uppercase letter] was found.
+* Returns 1 if at least 1 number was found.
 * Returns 0 if no such character was found.
 */
-fun checkChar(password: String, asciiNum1: Int, asciiNum2: Int, name: String): Int {
+fun findNumbers(password: String): Int {
     var found = 0
-    for (i in password) {
-        if (i.code in asciiNum1..asciiNum2) {
+    for (c in password) {
+        if (c.isDigit()) {
             found = 1
             break
         }
     }
-    if (found == 0) println("[ ] $name")
-    else println("[x] $name")
+    return found
+}
+
+/*
+* Returns 1 if at least 1 uppercase letter was found.
+* Returns 0 if no such character was found.
+*/
+fun findUpperCase(password: String): Int{
+    var found = 0
+    for (c in password) {
+        if (c.isUpperCase()) {
+            found = 1
+            break
+        }
+    }
+    return found
+}
+
+/*
+* Returns 1 if at least 1 lowercase letter was found.
+* Returns 0 if no such character was found.
+*/
+fun findLowerCase(password: String): Int{
+    var found = 0
+    for (c in password) {
+        if (c.isLowerCase()) {
+            found = 1
+            break
+        }
+    }
     return found
 }
 
 /*
 * Returns the number of special characters, or 0 if no special characters were found.
 */
-fun checkSpecialChar(password: String): Int {
+fun findSpecialChars(password: String): Int {
     var count = 0
     for (c in password) if (!(c.isLetterOrDigit())) count++
-    if (count == 0) println("[ ] special characters")
-    else println("[x] $count special character(s)")
     return count
 }
 
