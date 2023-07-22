@@ -10,16 +10,17 @@ Length: +1 point for every 8 characters
 
 fun main() {
     val password = readln()
+    val score = calcScore(password)
+    printResults(password, score)
+}
 
+fun calcScore(password: String): Int {
     val numbers = findNumbers(password)
     val uppercase = findUpperCase(password)
     val lowercase = findLowerCase(password)
     val specialChars = findSpecialChars(password)
-    val patterns =  findCommonPat(password) + findRepChars(password) + findABCpatterns(password)
-
-    val score = password.length/8 + numbers + uppercase + lowercase + specialChars - patterns
-    printResults(password, score)
-
+    val patterns = findCommonPat(password) + findRepChars(password) + findABCpatterns(password)
+    return password.length / 8 + numbers + uppercase + lowercase + specialChars - patterns
 }
 
 fun printResults(password: String, score: Int) {
@@ -69,7 +70,7 @@ fun findNumbers(password: String): Int {
 * Returns 1 if at least 1 uppercase letter was found.
 * Returns 0 if no such character was found.
 */
-fun findUpperCase(password: String): Int{
+fun findUpperCase(password: String): Int {
     var found = 0
     for (c in password) {
         if (c.isUpperCase()) {
@@ -84,7 +85,7 @@ fun findUpperCase(password: String): Int{
 * Returns 1 if at least 1 lowercase letter was found.
 * Returns 0 if no such character was found.
 */
-fun findLowerCase(password: String): Int{
+fun findLowerCase(password: String): Int {
     var found = 0
     for (c in password) {
         if (c.isLowerCase()) {
@@ -105,24 +106,38 @@ fun findSpecialChars(password: String): Int {
 }
 
 //find common patterns such as "qwerty", "admin", etc.
-fun findCommonPat(pass: String): Int{
+fun findCommonPat(pass: String): Int {
     //add common password patterns to this array:
-    val patterns = arrayOf("123123", "123321", "654321", "123qwe", "1q2w3e", "abc123", "admin", "dragon", "iloveyou", "lovely", "password", "qwerty", "welcome")
+    val patterns = arrayOf(
+        "123123",
+        "123321",
+        "654321",
+        "123qwe",
+        "1q2w3e",
+        "abc123",
+        "admin",
+        "dragon",
+        "iloveyou",
+        "lovely",
+        "password",
+        "qwerty",
+        "welcome"
+    )
     var count = 0
-    for(pattern in patterns){
+    for (pattern in patterns) {
         var i = 0
-        while(i<pass.length){
+        while (i < pass.length) {
             var temp = ""
-            if(pass[i]==pattern[0] && pass.length>=(i+pattern.length)){ //find the 1st letter of a pattern
-                temp+= pass[i]
-                for(j in 1 until pattern.length){
-                    if(pass[i+j]==pattern[j]) temp+= pass[i+j]
+            if (pass[i] == pattern[0] && pass.length >= (i + pattern.length)) { //find the 1st letter of a pattern
+                temp += pass[i]
+                for (j in 1 until pattern.length) {
+                    if (pass[i + j] == pattern[j]) temp += pass[i + j]
                     else break
                 }
-                if(temp==pattern){
+                if (temp == pattern) {
                     println("[!] common pattern \"$pattern\" is found")
                     count++
-                    i+= pattern.length
+                    i += pattern.length
                 }
             }
             i++
@@ -132,24 +147,24 @@ fun findCommonPat(pass: String): Int{
 }
 
 //find patterns of repeating (>3) characters and count them
-fun findRepChars(pass: String):Int{
+fun findRepChars(pass: String): Int {
     val len = pass.length
     var i = 0
     var count = 0
-    while(i<len-3){ //ignore the last 3 characters
+    while (i < len - 3) { //ignore the last 3 characters
         var temp = ""
-        if(pass[i]==pass[i+1]){ //2 repeating characters found
-            temp+= pass[i]
+        if (pass[i] == pass[i + 1]) { //2 repeating characters found
+            temp += pass[i]
             var j = 1
-            while(j<(len-i) && pass[i]==pass[i+j]){
-                temp+= pass[i]
+            while (j < (len - i) && pass[i] == pass[i + j]) {
+                temp += pass[i]
                 j++
             }
         }
-        if(temp.length>3){
+        if (temp.length > 3) {
             count++
             println("[!] common pattern \"$temp\" is found")
-            i+= temp.length-1
+            i += temp.length - 1
         }
         i++
     }
@@ -157,24 +172,24 @@ fun findRepChars(pass: String):Int{
 }
 
 //find arithmetic sequences with a common difference of 1 and sequences of letters in alphabetical order
-fun findABCpatterns(pass: String):Int{
+fun findABCpatterns(pass: String): Int {
     var i = 0
     var count = 0
-    while(i<pass.length-3){ //ignore the last 3 characters
+    while (i < pass.length - 3) { //ignore the last 3 characters
         var temp = ""
-        if(pass[i].code==pass[i+1].code-1){
-            temp+= pass[i]
-            temp+= pass[i+1]
+        if (pass[i].code == pass[i + 1].code - 1) {
+            temp += pass[i]
+            temp += pass[i + 1]
             var j = 1
-            while(j<(pass.length-i-1) && pass[i+j].code==pass[i+j+1].code-1){
-                temp+= pass[i+j+1]
+            while (j < (pass.length - i - 1) && pass[i + j].code == pass[i + j + 1].code - 1) {
+                temp += pass[i + j + 1]
                 j++
             }
         }
-        if(temp.length>3){
+        if (temp.length > 3) {
             count++
             println("[!] common pattern \"$temp\" is found")
-            i+= temp.length-1
+            i += temp.length - 1
         }
         i++
     }
