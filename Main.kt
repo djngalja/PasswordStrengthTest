@@ -19,7 +19,12 @@ fun calcScore(password: String): Int {
     val uppercase = findUpperCase(password)
     val lowercase = findLowerCase(password)
     val specialChars = findSpecialChars(password)
-    val patterns = findCommonPat(password) + findRepChars(password) + findABCpatterns(password)
+
+    val comPat = findCommonPat(password).size
+    val repCharPat = findRepChars(password).size
+    val abcPat = findABCpatterns(password).size
+    val patterns = comPat + repCharPat + abcPat
+
     return password.length / 8 + numbers + uppercase + lowercase + specialChars - patterns
 }
 
@@ -31,6 +36,9 @@ fun printResults(password: String, score: Int) {
     printCheckList("capital letters", findUpperCase(password))
     printCheckList("lowercase letters", findLowerCase(password))
     printCheckList("special characters", findSpecialChars(password), true)
+    printPatterns(findCommonPat(password))
+    printPatterns(findRepChars(password))
+    printPatterns(findABCpatterns(password))
     println()
     println("total score = $score (${evalScore(score)})")
 }
@@ -41,6 +49,10 @@ fun printCheckList(name: String, value: Int, specialChar: Boolean = false) {
         if (specialChar) println("[x] $value special character(s)")
         else println("[x] $name")
     }
+}
+
+fun printPatterns(set: MutableSet<String>){
+    for (pattern in set) println("[!] common pattern \"$pattern\" is found")
 }
 
 fun evalScore(score: Int): String {
@@ -106,7 +118,7 @@ fun findSpecialChars(password: String): Int {
 }
 
 //find common patterns such as "qwerty", "admin", etc.
-fun findCommonPat(pass: String): Int {
+fun findCommonPat(pass: String): MutableSet<String> {
     //add common password patterns to this array:
     val patterns = arrayOf(
         "123123",
@@ -123,7 +135,7 @@ fun findCommonPat(pass: String): Int {
         "qwerty",
         "welcome"
     )
-    var count = 0
+    val results = mutableSetOf<String>()
     for (pattern in patterns) {
         var i = 0
         while (i < pass.length) {
@@ -135,22 +147,21 @@ fun findCommonPat(pass: String): Int {
                     else break
                 }
                 if (temp == pattern) {
-                    println("[!] common pattern \"$pattern\" is found")
-                    count++
+                    results.add(temp)
                     i += pattern.length
                 }
             }
             i++
         }
     }
-    return count
+    return results
 }
 
 //find patterns of repeating (>3) characters and count them
-fun findRepChars(pass: String): Int {
+fun findRepChars(pass: String): MutableSet<String> {
+    val results = mutableSetOf<String>()
     val len = pass.length
     var i = 0
-    var count = 0
     while (i < len - 3) { //ignore the last 3 characters
         var temp = ""
         if (pass[i] == pass[i + 1]) { //2 repeating characters found
@@ -162,19 +173,18 @@ fun findRepChars(pass: String): Int {
             }
         }
         if (temp.length > 3) {
-            count++
-            println("[!] common pattern \"$temp\" is found")
+            results.add(temp)
             i += temp.length - 1
         }
         i++
     }
-    return count
+    return results
 }
 
 //find arithmetic sequences with a common difference of 1 and sequences of letters in alphabetical order
-fun findABCpatterns(pass: String): Int {
+fun findABCpatterns(pass: String): MutableSet<String> {
+    val results = mutableSetOf<String>()
     var i = 0
-    var count = 0
     while (i < pass.length - 3) { //ignore the last 3 characters
         var temp = ""
         if (pass[i].code == pass[i + 1].code - 1) {
@@ -187,11 +197,10 @@ fun findABCpatterns(pass: String): Int {
             }
         }
         if (temp.length > 3) {
-            count++
-            println("[!] common pattern \"$temp\" is found")
+            results.add(temp)
             i += temp.length - 1
         }
         i++
     }
-    return count
+    return results
 }
