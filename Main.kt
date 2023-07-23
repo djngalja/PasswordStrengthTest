@@ -182,27 +182,27 @@ fun findRepChars(pass: String): MutableSet<String> {
     return results
 }
 
-//find arithmetic sequences with a common difference of 1 and sequences of letters in alphabetical order
+/*
+* Returns the set of substrings found in the given String (password).
+* These substrings are arithmetic sequences with a common difference of 1,
+* as well as sequences of letters in alphabetical order.
+* If backwards == true, the substrings are arithmetic sequences with a common difference of -1,
+* as well as sequences of letters in reverse alphabetical order.
+*/
 fun findABCpatterns(password: String, backwards: Boolean = false): MutableSet<String> {
-    var step = -1
-    if (backwards) step = 1
     val results = mutableSetOf<String>()
+    val d = if (backwards) -1 else 1 // common difference
     var i = 0
-    while (i < password.length - 3) { //ignore the last 3 characters
+    while (i < password.length - 3) { //looking for sequences longer than 3 Chars only
         var temp = ""
-        if (password[i].code == password[i + 1].code + step) {
+        if ((password[i].code + d == password[i + 1].code) && password[i].isLetterOrDigit()) {
             temp += password[i]
-            temp += password[i + 1]
-            var j = 1
-            while (j < (password.length - i - 1) && password[i + j].code == password[i + j + 1].code + step) {
-                temp += password[i + j + 1]
-                j++
+            while ((i < (password.length - 1)) && (password[i].code + d == password[i + 1].code) && password[i].isLetterOrDigit()) {
+                temp += password[i + 1]
+                i++
             }
         }
-        if (temp.length > 3) {
-            results.add(temp)
-            i += temp.length - 1
-        }
+        if (temp.length > 3) results.add(temp)
         i++
     }
     return results
