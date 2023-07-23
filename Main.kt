@@ -23,7 +23,8 @@ fun calcScore(password: String): Int {
     val comPat = findCommonPat(password).size
     val repCharPat = findRepChars(password).size
     val abcPat = findABCpatterns(password).size
-    val patterns = comPat + repCharPat + abcPat
+    val cbaPat = findABCpatterns(password, true).size
+    val patterns = comPat + repCharPat + abcPat + cbaPat
 
     return password.length / 8 + numbers + uppercase + lowercase + specialChars - patterns
 }
@@ -39,6 +40,7 @@ fun printResults(password: String, score: Int) {
     printPatterns(findCommonPat(password))
     printPatterns(findRepChars(password))
     printPatterns(findABCpatterns(password))
+    printPatterns(findABCpatterns(password, true))
     println()
     println("total score = $score (${evalScore(score)})")
 }
@@ -123,7 +125,6 @@ fun findCommonPat(pass: String): MutableSet<String> {
     val patterns = arrayOf(
         "123123",
         "123321",
-        "654321",
         "123qwe",
         "1q2w3e",
         "abc123",
@@ -182,17 +183,19 @@ fun findRepChars(pass: String): MutableSet<String> {
 }
 
 //find arithmetic sequences with a common difference of 1 and sequences of letters in alphabetical order
-fun findABCpatterns(pass: String): MutableSet<String> {
+fun findABCpatterns(password: String, backwards: Boolean = false): MutableSet<String> {
+    var step = -1
+    if (backwards) step = 1
     val results = mutableSetOf<String>()
     var i = 0
-    while (i < pass.length - 3) { //ignore the last 3 characters
+    while (i < password.length - 3) { //ignore the last 3 characters
         var temp = ""
-        if (pass[i].code == pass[i + 1].code - 1) {
-            temp += pass[i]
-            temp += pass[i + 1]
+        if (password[i].code == password[i + 1].code + step) {
+            temp += password[i]
+            temp += password[i + 1]
             var j = 1
-            while (j < (pass.length - i - 1) && pass[i + j].code == pass[i + j + 1].code - 1) {
-                temp += pass[i + j + 1]
+            while (j < (password.length - i - 1) && password[i + j].code == password[i + j + 1].code + step) {
+                temp += password[i + j + 1]
                 j++
             }
         }
