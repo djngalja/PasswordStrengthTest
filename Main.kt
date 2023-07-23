@@ -158,25 +158,23 @@ fun findCommonPat(pass: String): MutableSet<String> {
     return results
 }
 
-//find patterns of repeating (>3) characters and count them
-fun findRepChars(pass: String): MutableSet<String> {
+/*
+* Returns the set of substrings of any repeating Chars found in the given String (password).
+* Each substring is at least 4 Chars long.
+*/
+fun findRepChars(password: String): MutableSet<String> {
     val results = mutableSetOf<String>()
-    val len = pass.length
     var i = 0
-    while (i < len - 3) { //ignore the last 3 characters
+    while (i < password.length - 3) { //looking for patterns longer than 3 Chars
         var temp = ""
-        if (pass[i] == pass[i + 1]) { //2 repeating characters found
-            temp += pass[i]
-            var j = 1
-            while (j < (len - i) && pass[i] == pass[i + j]) {
-                temp += pass[i]
-                j++
+        if (password[i] == password[i + 1]) { //2 repeating Chars found
+            temp += password[i]
+            while ((i < (password.length - 1)) && (password[i] == password[i + 1])) {
+                temp += password[i + 1]
+                i++
             }
         }
-        if (temp.length > 3) {
-            results.add(temp)
-            i += temp.length - 1
-        }
+        if (temp.length > 3) results.add(temp)
         i++
     }
     return results
@@ -193,7 +191,7 @@ fun findABCpatterns(password: String, backwards: Boolean = false): MutableSet<St
     val results = mutableSetOf<String>()
     val d = if (backwards) -1 else 1 // common difference
     var i = 0
-    while (i < password.length - 3) { //looking for sequences longer than 3 Chars only
+    while (i < password.length - 3) { //looking for sequences longer than 3 Chars
         var temp = ""
         if ((password[i].code + d == password[i + 1].code) && password[i].isLetterOrDigit()) {
             temp += password[i]
