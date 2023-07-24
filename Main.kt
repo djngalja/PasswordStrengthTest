@@ -8,7 +8,8 @@ fun main() {
     printResults(password, score)
 }
 
-/* Calculates and returns the total score based on the following rules:
+/*
+* Calculates and returns the total score based on the following rules:
 Length: +1 point for every 8 characters
 +1 point for numbers
 +1 point for uppercase letters
