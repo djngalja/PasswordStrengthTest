@@ -1,48 +1,46 @@
-/* PASSWORD STRENGTH TEST
+/*
+* Password Strength Test
+*/
 
-    SCORE:
+fun main() {
+    val password = readln()
+    val score = calculateScore(password)
+    printResults(password, score)
+}
+
+/* Calculates and returns the total score based on the following rules:
 Length: +1 point for every 8 characters
 +1 point for numbers
 +1 point for uppercase letters
 +1 point for lowercase letters
 +1 point for every special character
--1 point for every common pattern */
-
-fun main() {
-    val password = readln()
-    val score = calcScore(password)
-    printResults(password, score)
-}
-
-fun calcScore(password: String): Int {
+-1 point for every common pattern
+*/
+fun calculateScore(password: String): Int {
     val numbers = findNumbers(password)
     val uppercase = findUpperCase(password)
     val lowercase = findLowerCase(password)
     val specialChars = findSpecialChars(password)
-
-    val p1 = findCommonPat(password).size
-    val p2 = findRepChars(password).size
+    val p1 = findCommonPatterns(password).size
+    val p2 = findRepeatChars(password).size
     val p3 = findABCpatterns(password).size
     val p4 = findABCpatterns(password, true).size
     val patterns = p1 + p2 + p3 + p4
-
     return password.length / 8 + numbers + uppercase + lowercase + specialChars - patterns
 }
 
 fun printResults(password: String, score: Int) {
-    println()
     println("password length = " + password.length)
     println()
     printCheckList("numbers", findNumbers(password))
     printCheckList("capital letters", findUpperCase(password))
     printCheckList("lowercase letters", findLowerCase(password))
     printCheckList("special characters", findSpecialChars(password), true)
-    printPatterns(findCommonPat(password))
-    printPatterns(findRepChars(password))
+    printPatterns(findCommonPatterns(password))
+    printPatterns(findRepeatChars(password))
     printPatterns(findABCpatterns(password))
     printPatterns(findABCpatterns(password, true))
-    println()
-    println("total score = $score (${evalScore(score)})")
+    println("\ntotal score = $score (${evaluateScore(score)})")
 }
 
 fun printCheckList(name: String, value: Int, specialChar: Boolean = false) {
@@ -53,11 +51,11 @@ fun printCheckList(name: String, value: Int, specialChar: Boolean = false) {
     }
 }
 
-fun printPatterns(set: MutableSet<String>){
+fun printPatterns(set: MutableSet<String>) {
     for (pattern in set) println("[!] common pattern \"$pattern\" is found")
 }
 
-fun evalScore(score: Int): String {
+fun evaluateScore(score: Int): String {
     return if (score <= 2) "very weak"
     else if (score <= 4) "weak"
     else if (score <= 6) "medium"
@@ -121,7 +119,7 @@ fun findSpecialChars(password: String): Int {
 * The patterns are added manually to the Array `patterns`.
 * Each substring is at least 4 Chars long.
 */
-fun findCommonPat(password: String): MutableSet<String> {
+fun findCommonPatterns(password: String): MutableSet<String> {
     val results = mutableSetOf<String>()
     val patterns = arrayOf( //add common password patterns to this Array
         "123123",
@@ -142,7 +140,7 @@ fun findCommonPat(password: String): MutableSet<String> {
         while (i < password.length) {
             var temp = ""
             if ((password[i] == pattern[0]) && (password.length >= (i + pattern.length))) {
-                for(j in pattern.indices){
+                for (j in pattern.indices) {
                     if (password[i + j] == pattern[j]) temp += password[i + j]
                     else break
                 }
@@ -161,7 +159,7 @@ fun findCommonPat(password: String): MutableSet<String> {
 * Returns a set of substrings of any repeating Chars found in the given String (password).
 * Each substring is at least 4 Chars long.
 */
-fun findRepChars(password: String): MutableSet<String> {
+fun findRepeatChars(password: String): MutableSet<String> {
     val results = mutableSetOf<String>()
     var i = 0
     while (i < password.length - 3) { //looking for patterns longer than 3 Chars
