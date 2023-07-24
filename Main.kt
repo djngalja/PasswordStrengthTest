@@ -20,11 +20,11 @@ fun calcScore(password: String): Int {
     val lowercase = findLowerCase(password)
     val specialChars = findSpecialChars(password)
 
-    val comPat = findCommonPat(password).size
-    val repCharPat = findRepChars(password).size
-    val abcPat = findABCpatterns(password).size
-    val cbaPat = findABCpatterns(password, true).size
-    val patterns = comPat + repCharPat + abcPat + cbaPat
+    val p1 = findCommonPat(password).size
+    val p2 = findRepChars(password).size
+    val p3 = findABCpatterns(password).size
+    val p4 = findABCpatterns(password, true).size
+    val patterns = p1 + p2 + p3 + p4
 
     return password.length / 8 + numbers + uppercase + lowercase + specialChars - patterns
 }
@@ -66,8 +66,7 @@ fun evalScore(score: Int): String {
 }
 
 /*
-* Returns 1 if at least 1 number was found.
-* Returns 0 if no such character was found.
+* Returns 1 if at least 1 number was found, or 0 if no such character was found.
 */
 fun findNumbers(password: String): Int {
     var found = 0
@@ -81,8 +80,7 @@ fun findNumbers(password: String): Int {
 }
 
 /*
-* Returns 1 if at least 1 uppercase letter was found.
-* Returns 0 if no such character was found.
+* Returns 1 if at least 1 uppercase letter was found, or 0 if no such character was found.
 */
 fun findUpperCase(password: String): Int {
     var found = 0
@@ -96,8 +94,7 @@ fun findUpperCase(password: String): Int {
 }
 
 /*
-* Returns 1 if at least 1 lowercase letter was found.
-* Returns 0 if no such character was found.
+* Returns 1 if at least 1 lowercase letter was found, or 0 if no such character was found.
 */
 fun findLowerCase(password: String): Int {
     var found = 0
@@ -119,10 +116,14 @@ fun findSpecialChars(password: String): Int {
     return count
 }
 
-//find common patterns such as "qwerty", "admin", etc.
-fun findCommonPat(pass: String): MutableSet<String> {
-    //add common password patterns to this array:
-    val patterns = arrayOf(
+/*
+* Returns a set of substrings of any common patterns found in the given String (password).
+* The patterns are added manually to the Array `patterns`.
+* Each substring is at least 4 Chars long.
+*/
+fun findCommonPat(password: String): MutableSet<String> {
+    val results = mutableSetOf<String>()
+    val patterns = arrayOf( //add common password patterns to this Array
         "123123",
         "123321",
         "123qwe",
@@ -136,15 +137,13 @@ fun findCommonPat(pass: String): MutableSet<String> {
         "qwerty",
         "welcome"
     )
-    val results = mutableSetOf<String>()
     for (pattern in patterns) {
         var i = 0
-        while (i < pass.length) {
+        while (i < password.length) {
             var temp = ""
-            if (pass[i] == pattern[0] && pass.length >= (i + pattern.length)) { //find the 1st letter of a pattern
-                temp += pass[i]
-                for (j in 1 until pattern.length) {
-                    if (pass[i + j] == pattern[j]) temp += pass[i + j]
+            if ((password[i] == pattern[0]) && (password.length >= (i + pattern.length))) {
+                for(j in pattern.indices){
+                    if (password[i + j] == pattern[j]) temp += password[i + j]
                     else break
                 }
                 if (temp == pattern) {
@@ -159,7 +158,7 @@ fun findCommonPat(pass: String): MutableSet<String> {
 }
 
 /*
-* Returns the set of substrings of any repeating Chars found in the given String (password).
+* Returns a set of substrings of any repeating Chars found in the given String (password).
 * Each substring is at least 4 Chars long.
 */
 fun findRepChars(password: String): MutableSet<String> {
@@ -186,6 +185,7 @@ fun findRepChars(password: String): MutableSet<String> {
 * as well as sequences of letters in alphabetical order.
 * If backwards == true, the substrings are arithmetic sequences with a common difference of -1,
 * as well as sequences of letters in reverse alphabetical order.
+* Each substring is at least 4 Chars long.
 */
 fun findABCpatterns(password: String, backwards: Boolean = false): MutableSet<String> {
     val results = mutableSetOf<String>()
