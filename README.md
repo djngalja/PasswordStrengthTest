@@ -26,15 +26,25 @@ password length = 24
 
 total score = 5 (medium)
 
+### Common Patterns
+The following password patterns are taken into account: <br />
+
+| Pattern description                                     | Examples              |
+|---------------------------------------------------------|-----------------------|
+| Arithmetic sequences with common differences of 1 or -1 | `1234` `65432`        |
+| Sequences of letters in (reverse) arithmetical order    | `HIJKL` `dcba`        |
+| Sequences of repeating characters                       | `GGGG` `_____` `6666` |
+| Common password patterns                                | `qwerty` `admin`      |
+
 ### Scoring System
 
-| Score  | Password Strength |
-| --- | --- |
-| < 3  | very weak  |
-| 3 - 4  | weak  |
-| 5 - 6 | medium |
-| 7 - 8 | strong |
-| > 8 | very strong |
+| Score | Password Strength |
+|-------|-------------------|
+| < 3   | very weak         |
+| 3 - 4 | weak              |
+| 5 - 6 | medium            |
+| 7 - 8 | strong            |
+| > 8   | very strong       |
 
 Points are awarded if:
 
