@@ -32,7 +32,7 @@ The following password patterns are taken into account: <br />
 | Pattern description                                     | Examples              |
 |---------------------------------------------------------|-----------------------|
 | Arithmetic sequences with common differences of 1 or -1 | `1234` `65432`        |
-| Sequences of letters in (reverse) arithmetical order    | `HIJKL` `dcba`        |
+| Sequences of letters in (reverse) alphabetical order    | `HIJKL` `dcba`        |
 | Sequences of repeating characters                       | `GGGG` `_____` `6666` |
 | Common password patterns                                | `qwerty` `admin`      |
 
