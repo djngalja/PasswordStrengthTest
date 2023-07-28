@@ -3,6 +3,7 @@
 */
 
 fun main() {
+    println("Enter a password to test its strength:")
     val password = readln()
     val score = calculateScore(password)
     printResults(password, score)
