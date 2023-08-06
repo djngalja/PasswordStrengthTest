@@ -19,25 +19,25 @@ Length: +1 point for every 8 characters
 -1 point for every common pattern
 */
 fun calculateScore(password: String): Int {
-    val numbers = findNumbers(password)
-    val uppercase = findUpperCase(password)
-    val lowercase = findLowerCase(password)
-    val specialChars = findSpecialChars(password)
+    val digit = password.findDigit()
+    val uppercase = password.findUpperCase()
+    val lowercase = password.findLowerCase()
+    val specialChars = password.findSpecialChars()
     val p1 = findCommonPatterns(password).size
     val p2 = findRepeatChars(password).size
     val p3 = findABCpatterns(password).size
     val p4 = findABCpatterns(password, true).size
     val patterns = p1 + p2 + p3 + p4
-    return password.length / 8 + numbers + uppercase + lowercase + specialChars - patterns
+    return password.length / 8 + digit + uppercase + lowercase + specialChars - patterns
 }
 
 fun printResults(password: String, score: Int) {
     println("password length = " + password.length)
     println()
-    printCheckList("numbers", findNumbers(password))
-    printCheckList("capital letters", findUpperCase(password))
-    printCheckList("lowercase letters", findLowerCase(password))
-    printCheckList("special characters", findSpecialChars(password), true)
+    printCheckList("numbers", password.findDigit())
+    printCheckList("capital letters", password.findUpperCase())
+    printCheckList("lowercase letters", password.findLowerCase())
+    printCheckList("special characters", password.findSpecialChars(), true)
     printPatterns(findCommonPatterns(password))
     printPatterns(findRepeatChars(password))
     printPatterns(findABCpatterns(password))
@@ -66,53 +66,35 @@ fun evaluateScore(score: Int): String {
 }
 
 /*
-* Returns 1 if at least 1 number was found, or 0 if no such character was found.
+* Returns 1 if at least 1 digit was found, or 0 if no such character was found.
 */
-fun findNumbers(password: String): Int {
-    var found = 0
-    for (c in password) {
-        if (c.isDigit()) {
-            found = 1
-            break
-        }
-    }
-    return found
+fun String.findDigit(): Int {
+    for (c in this) if (c.isDigit()) return 1
+    return 0
 }
 
 /*
 * Returns 1 if at least 1 uppercase letter was found, or 0 if no such character was found.
 */
-fun findUpperCase(password: String): Int {
-    var found = 0
-    for (c in password) {
-        if (c.isUpperCase()) {
-            found = 1
-            break
-        }
-    }
-    return found
+fun String.findUpperCase(): Int {
+    for (c in this) if (c.isUpperCase()) return 1
+    return 0
 }
 
 /*
 * Returns 1 if at least 1 lowercase letter was found, or 0 if no such character was found.
 */
-fun findLowerCase(password: String): Int {
-    var found = 0
-    for (c in password) {
-        if (c.isLowerCase()) {
-            found = 1
-            break
-        }
-    }
-    return found
+fun String.findLowerCase(): Int {
+    for (c in this) if (c.isLowerCase()) return 1
+    return 0
 }
 
 /*
 * Returns the number of special characters, or 0 if no special characters were found.
 */
-fun findSpecialChars(password: String): Int {
+fun String.findSpecialChars(): Int {
     var count = 0
-    for (c in password) if (!(c.isLetterOrDigit())) count++
+    for (c in this) if (!(c.isLetterOrDigit())) count++
     return count
 }
 
