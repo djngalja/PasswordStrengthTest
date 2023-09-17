@@ -98,7 +98,7 @@ class Password(private val password: String, private val minPatternLength: Int =
                     }
                     if (tempString.length == pattern.length) {
                         patternsFound.add(tempString)
-                        i += pattern.length
+                        i += pattern.length - 1
                     }
                 }
                 i++
